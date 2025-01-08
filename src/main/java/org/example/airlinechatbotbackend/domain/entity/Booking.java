@@ -44,6 +44,13 @@ public class Booking {
         this.to = to;
     }
 
-
+    public Booking(Long bookingNumber, Customer customer, LocalDate date, BookingStatus bookingStatus, String from, String to) {
+        this.bookingNumber = bookingNumber;
+        this.customer = customer;
+        this.date = date;
+        this.bookingStatus = bookingStatus;
+        this.from = from;
+        this.to = to;
+    }
 }
 
