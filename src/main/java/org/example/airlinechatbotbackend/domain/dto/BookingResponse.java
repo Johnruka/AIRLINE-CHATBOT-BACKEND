@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record BookingResponse(
 
-        Integer id,
+        Long bookingNumber, Integer id,
         String firstName,
         String lastName,
         LocalDate date,

@@ -9,11 +9,10 @@ import org.example.airlinechatbotbackend.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class BookingServiceImpl implements BookingService{
+public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
 
@@ -43,6 +42,7 @@ public class BookingServiceImpl implements BookingService{
         Booking booking = findBooking(bookingNumber, firstName, lastName, customerId);
         return toBookingResponse(booking);
     }
+
     private Booking findBooking(Long bookingNumber, String firstName, String lastName, Integer customerId) {
         return bookingRepository.findByBookingNumberAndCustomer_FirstNameAndCustomer_LastNameAndCustomer_Id(
                 bookingNumber, firstName, lastName, customerId
@@ -84,18 +84,25 @@ public class BookingServiceImpl implements BookingService{
     }
 
     private BookingResponse toBookingResponse(Booking booking) {
+        // Check if customer is not null once
+        Customer customer = booking.getCustomer();
+
+        // Extract customer details, use null if customer is null
+        Integer customerId = (customer != null) ? customer.getId() : null;
+        String firstName = (customer != null) ? customer.getFirstName() : null;
+        String lastName = (customer != null) ? customer.getLastName() : null;
+
+        // Create and return the BookingResponse object
         return new BookingResponse(
                 booking.getBookingNumber(),
-                booking.getCustomer()!= null ? booking.getCustomer().getId() : null,
-                booking.getCustomer()!= null ? booking.getCustomer().getFirstName() : null,
-                booking.getCustomer()!= null ? booking.getCustomer().getLastName() : null,
+                customerId,
+                firstName,
+                lastName,
                 booking.getDate(),
                 booking.getBookingStatus(),
                 booking.getFrom(),
                 booking.getTo()
-
         );
     }
-
-    }
+}
 

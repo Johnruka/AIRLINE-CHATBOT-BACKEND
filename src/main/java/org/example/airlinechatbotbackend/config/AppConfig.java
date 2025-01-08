@@ -1,6 +1,6 @@
 package org.example.airlinechatbotbackend.config;
 
-import jakarta.annotation.Resource;
+
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 @Configuration
 @ComponentScan("org.example.airlinechatbotbackend")
@@ -29,6 +30,7 @@ public class AppConfig {
         return new SimpleVectorStore(embeddingModel);
     }
 
+
     @Bean
     public CommandLineRunner ingestTermOfServiceToVectorStore(
             EmbeddingModel embeddingModel, VectorStore vectorStore,
@@ -38,7 +40,7 @@ public class AppConfig {
             // Ingest the document into the vector store
             vectorStore.write(
                     new TokenTextSplitter().transform(
-                            new TextReader(String.valueOf(termsOfServiceDocs)).read()));
+                            new TextReader(termsOfServiceDocs).read()));
 
             vectorStore.similaritySearch("Cancelling Bookings").forEach(doc -> {
                 System.out.println("Similar Document: " + doc.getContent());
@@ -47,4 +49,5 @@ public class AppConfig {
     }
 
 }
+
 
